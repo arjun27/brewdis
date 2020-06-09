@@ -12,7 +12,10 @@ describe('brewdis tests', () => {
   it('should be able to search', async () => {
     await page.fill('[placeholder=Search]', 'ipa');
     page.on('response', (response) => {console.log('response event', response.url())});
-    await page.keyboard.press('Enter');
+    await Promise.all([
+      page.keyboard.press('Enter'),
+      page.waitForSelector('mat-card-title')
+    ]);
     await page.waitForLoadState('networkidle');
     console.log('networkidle');
     await page.screenshot({ path: '__tests__/artifacts/search.png' });
